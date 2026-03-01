@@ -1,0 +1,37 @@
+[Unit]
+Description=HumanitZ MAZA Dedicated Server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/humanityz
+
+# Backup Saved directory and config before updating (overwrites previous backup)
+ExecStartPre=/usr/bin/rsync -a --delete /home/ubuntu/humanityz/HumanitZServer/Saved/ /home/ubuntu/humanityz-backup/Saved/
+ExecStartPre=/usr/bin/cp -f /home/ubuntu/humanityz/HumanitZServer/GameServerSettings.ini /home/ubuntu/humanityz-backup/
+
+# Auto-update via SteamCMD before every start (nightly restart, crash recovery, manual start).
+# If no update is available, this completes in ~5-10 seconds.
+ExecStartPre=/usr/games/steamcmd \
+    +force_install_dir /home/ubuntu/humanityz \
+    +login anonymous \
+    +app_update 2728330 -beta linuxbranch validate \
+    +quit
+
+ExecStart=/home/ubuntu/humanityz/HumanitZServer/Binaries/Linux/HumanitZServer-Linux-Shipping HumanitZServer -port=7777 -QueryPort=27015 -log
+
+Nice=-10
+Restart=on-failure
+RestartSec=15
+
+# The game's "shutdown" command exits with code 1; don't treat that as a crash.
+RestartPreventExitStatus=1
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

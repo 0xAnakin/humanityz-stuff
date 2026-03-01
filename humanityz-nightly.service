@@ -1,0 +1,18 @@
+[Unit]
+Description=HumanitZ Nightly Restart (RCON countdown + service restart)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=ubuntu
+Group=ubuntu
+ExecStart=/usr/local/bin/humanityz-nightly.sh
+StandardOutput=journal
+StandardError=journal
+
+# Allow 35 minutes for the 30-minute countdown + restart
+TimeoutStartSec=2100
+
+[Install]
+WantedBy=multi-user.target

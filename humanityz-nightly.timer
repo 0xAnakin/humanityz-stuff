@@ -1,0 +1,11 @@
+[Unit]
+Description=HumanitZ Nightly Restart Timer
+
+[Timer]
+# Fire daily at 03:30 so the 30-minute countdown finishes at 04:00
+OnCalendar=*-*-* 03:30:00
+Persistent=true
+AccuracySec=1min
+
+[Install]
+WantedBy=timers.target
