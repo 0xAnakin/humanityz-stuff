@@ -1,0 +1,17 @@
+[Unit]
+Description=HumanitZ Server Watchdog (updates, health monitoring, daily restarts)
+After=network-online.target humanityz.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+ExecStart=/usr/local/bin/humanityz-watchdog.sh
+Restart=on-failure
+RestartSec=30
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
