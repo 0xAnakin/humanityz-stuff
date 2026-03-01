@@ -24,8 +24,8 @@ SERVICE_NAME="humanityz.service"
 # Path to rcon-cli binary (https://github.com/gorcon/rcon-cli)
 RCON_BIN="rcon"
 
-# Log file (must be writable by the ubuntu user; /var/log/ requires root)
-LOG_FILE="/home/ubuntu/humanityz-nightly.log"
+# Log file
+LOG_FILE="/var/log/humanityz-nightly.log"
 
 # Maximum RCON retry attempts per message
 RCON_MAX_RETRIES=3
@@ -37,7 +37,9 @@ RCON_RETRY_DELAY=5
 # INTERNAL
 ###############################################################################
 
-mkdir -p "$(dirname "$LOG_FILE")"
+# Ensure the log file exists and is writable by the current user
+sudo touch "$LOG_FILE"
+sudo chown "$(id -un):$(id -gn)" "$LOG_FILE"
 
 # -------------------------------------------------------------------
 # Logging

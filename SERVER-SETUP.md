@@ -157,7 +157,7 @@ journalctl -u humanityz.service -n 100 --no-pager
 ### View nightly restart logs
 ```bash
 # Script log file
-cat /home/ubuntu/humanityz-nightly.log
+cat /var/log/humanityz-nightly.log
 
 # Systemd journal
 journalctl -u humanityz-nightly.service -n 50 --no-pager
